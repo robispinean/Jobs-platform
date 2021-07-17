@@ -1,0 +1,20 @@
+{
+  "name": "jobs-platform-backend",
+  "version": "0.1.0",
+  "scripts": {
+    "start": "npx nodemon ./bin/www.mjs",
+    "lint": "npx eslint -c './.eslintrc.json' './**/*.mjs'",
+    "fix": "npx eslint -c './.eslintrc.json' './**/*.mjs' --fix"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "hbs": "^4.1.2",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.30.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.23.4",
+    "nodemon": "^2.0.12"
+  }
+}

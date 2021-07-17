@@ -1,0 +1,25 @@
+{
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "airbnb-base"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 12,
+      "sourceType": "module"
+    },
+    "rules": {
+      "no-console": "off"
+    },
+    "settings": {
+      "import/extensions": "off",
+      "import/resolver": {
+        "node": {
+          "extensions": [
+            ".js"
+          ]
+        }
+      }
+    }
+  }
