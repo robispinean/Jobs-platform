@@ -7,8 +7,11 @@
     "fix": "npx eslint -c './.eslintrc.json' './**/*.mjs' --fix"
   },
   "dependencies": {
+    "debug": "^4.3.2",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "hbs": "^4.1.2",
+    "http-errors": "^1.7.2",
     "morgan": "^1.10.0"
   },
   "devDependencies": {

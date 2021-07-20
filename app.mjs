@@ -4,6 +4,8 @@ import path from 'path';
 
 import util from './util/general-utils.mjs';
 
+import errorRouter from './routes/404.mjs';
+
 const app = express();
 
 const dirpath = util.getCurrentDirectoryFromURL(import.meta.url);
@@ -23,5 +25,7 @@ app.get('/', (req, res) => {
     title: 'Express',
   });
 });
+
+app.use(errorRouter);
 
 export default app;
