@@ -2,9 +2,11 @@ import express from 'express';
 import logger from 'morgan';
 import path from 'path';
 
-import util from './util/general-utils.mjs';
+import util from './util/general-util.mjs';
 
+import authRouter from './routes/auth.mjs';
 import errorRouter from './routes/404.mjs';
+import indexRouter from './routes/index.mjs';
 
 const app = express();
 
@@ -20,11 +22,9 @@ app.use(express.static(path.join(dirpath, 'public')));
 
 app.use(logger('dev'));
 
-app.get('/', (req, res) => {
-  res.render('index', {
-    title: 'Express',
-  });
-});
+app.use('/', indexRouter);
+
+app.use('/api/auth', authRouter);
 
 app.use(errorRouter);
 

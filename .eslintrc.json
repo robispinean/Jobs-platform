@@ -10,7 +10,8 @@
       "sourceType": "module"
     },
     "rules": {
-      "no-console": "off"
+      "no-console": "off",
+      "no-underscore-dangle": "off"
     },
     "settings": {
       "import/extensions": "off",
@@ -23,3 +24,4 @@
       }
     }
   }
+  

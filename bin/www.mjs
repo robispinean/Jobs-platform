@@ -1,18 +1,23 @@
 import debug from 'debug';
-import dotenv from 'dotenv';
 import http from 'http';
+import mongoose from 'mongoose';
 
 import app from '../app.mjs';
 
-dotenv.config();
-
-const { PORT } = process.env;
+const { PORT, DEBUG } = process.env;
+const { DB_USERNAME, DB_PASSWORD, DB_DATABASE } = process.env;
 
 const server = http.createServer(app);
 
-const log = debug('backend:server');
+const log = debug(DEBUG);
 
-server.listen(PORT);
+mongoose.connect(
+  `mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}@cluster0.lonsy.mongodb.net/${DB_DATABASE}?retryWrites=true&w=majority`,
+  { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false },
+).then(() => {
+  server.listen(PORT);
+  log('Connected to database');
+}).catch((err) => { log(err); });
 
 server.on('listening', () => {
   const address = server.address();
