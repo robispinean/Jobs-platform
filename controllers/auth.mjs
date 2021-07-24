@@ -20,7 +20,7 @@ export const verifyTokenController = (req, res) => {
 export const loginController = (req, res) => {
   User.findOne({ email: req.body.email }).populate('roles', '-__v')
     .then((user) => {
-      if (!user) return res.status(401).json({ error: 'Invalid email or password.' });
+      if (!user) return res.status(401).json({ error: 'Invalid email.' });
 
       const isPasswordValid = bcrypt.compareSync(req.body.password, user.password);
 
