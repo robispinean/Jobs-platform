@@ -6,6 +6,7 @@ import authRouter from './routes/auth.mjs';
 import errorRouter from './routes/404.mjs';
 import indexRouter from './routes/index.mjs';
 import postRoutes from './routes/postRoutes.mjs'
+import { notFound, errorHandler } from './middleware/errorMiddleware.mjs'
 
 const app = express();
 
@@ -27,6 +28,8 @@ app.use('/api/auth', authRouter);
 
 app.use('/api/posts', postRoutes)
 
+app.use(notFound)
+app.use(errorHandler)
 app.use(errorRouter);
 
 export default app;
