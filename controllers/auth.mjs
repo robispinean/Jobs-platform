@@ -1,5 +1,5 @@
-import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 import Role from '../models/role.mjs';
 import User from '../models/user.mjs';
@@ -29,7 +29,7 @@ export const loginController = (req, res) => {
   User.findOne({ email: req.body.email }).populate('role', '-__v')
     .then((user) => {
       if (!user) {
-        return res.status(401).json({ error: 'Email is not recognizable.' });
+        return res.status(401).json({ error: 'Email is not recognized.' });
       }
 
       const isPasswordCorrect = bcrypt.compareSync(req.body.password, user.password);
