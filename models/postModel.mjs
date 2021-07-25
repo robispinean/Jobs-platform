@@ -1,5 +1,4 @@
 import mongoose from 'mongoose'
-import CommentSchema from './commentModel.mjs'
 
 const postSchema = mongoose.Schema({
     owner: {
