@@ -4,7 +4,9 @@
   "scripts": {
     "start": "npx nodemon -r dotenv/config ./bin/www.mjs dotenv_config_path=./.env",
     "lint": "npx eslint -c './.eslintrc.json' './**/*.mjs'",
-    "fix": "npx eslint -c './.eslintrc.json' './**/*.mjs' --fix"
+    "fix": "npx eslint -c './.eslintrc.json' './**/*.mjs' --fix",
+    "data:import": "node -r dotenv/config seed.mjs dotenv_config_path=./.env",
+    "data:delete": "node -r dotenv/config seed.mjs -d dotenv_config_path=./.env"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
