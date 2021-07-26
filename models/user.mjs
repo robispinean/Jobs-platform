@@ -4,8 +4,8 @@ const roleSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-  }
-})
+  },
+});
 
 const Role = mongoose.model('Role', roleSchema, 'roles');
 
@@ -26,4 +26,4 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', userSchema, 'users');
 
-export { User, Role }
+export { User, Role };
