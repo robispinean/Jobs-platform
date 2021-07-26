@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
     ref: 'Role',
     required: true,
   },
-});
+}, { timestamps: true });
 
 const User = mongoose.model('User', userSchema, 'users');
 
