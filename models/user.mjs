@@ -1,9 +1,5 @@
 import mongoose from 'mongoose';
 
-const roleSchema = new mongoose.Schema({
-  name: String,
-});
-
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -14,12 +10,11 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   role: {
-    type: roleSchema,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Role',
     required: true,
-  }
-}, {
-  timestamps: true
-})
+  },
+}, { timestamps: true });
 
 const User = mongoose.model('User', userSchema, 'users');
 
