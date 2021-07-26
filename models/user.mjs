@@ -1,5 +1,14 @@
 import mongoose from 'mongoose';
 
+const roleSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  }
+})
+
+const Role = mongoose.model('Role', roleSchema, 'roles');
+
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -10,12 +19,11 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   role: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Role',
+    type: roleSchema,
     required: true,
   },
 }, { timestamps: true });
 
 const User = mongoose.model('User', userSchema, 'users');
 
-export default User;
+export { User, Role }

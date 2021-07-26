@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import Post from "./models/postModel.mjs"
-import User from "./models/user.mjs"
+import { User } from "./models/user.mjs"
 import Comment from "./models/commentModel.mjs"
 import users from "./data/userData.mjs"
 import posts from "./data/postData.mjs"

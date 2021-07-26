@@ -1,8 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-import Role from '../models/role.mjs';
-import User from '../models/user.mjs';
+import { User, Role } from '../models/user.mjs';
 
 const { SECRET } = process.env;
 
@@ -43,7 +42,7 @@ export const loginController = (req, res) => {
       return res.status(200).json({
         id: user._id,
         email: user.email,
-        role: user.role.name,
+        role: user.role,
         accessToken: token,
       });
     }).catch(() => {
