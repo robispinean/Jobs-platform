@@ -1,8 +1,9 @@
 import dotenv from 'dotenv';
 import Post from './models/postModel.mjs';
-import { User } from './models/user.mjs';
+import User from './models/user.mjs';
 import Comment from './models/commentModel.mjs';
-import users from './data/userData.mjs';
+import Role from './models/role.mjs';
+import { users, roles } from './data/userData.mjs';
 import posts from './data/postData.mjs';
 import comments from './data/commentData.mjs';
 import connectDB from './config/db.mjs';
@@ -16,6 +17,9 @@ const importData = async () => {
     await Comment.deleteMany();
     await Post.deleteMany();
     await User.deleteMany();
+    await Role.deleteMany();
+
+    await Role.insertMany(roles);
 
     const createdUsers = await User.insertMany(users);
     const admin = createdUsers[0]._id;
