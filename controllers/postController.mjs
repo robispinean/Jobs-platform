@@ -43,7 +43,6 @@ const deletePost = asyncHandler(async (req, res) => {
 // @route   POST /api/posts
 // @access  User
 const createPost = asyncHandler(async (req, res) => {
-  console.log(req.user._id)
   const post = new Post({
     owner: req.user._id,
     type: req.body.type,
@@ -59,4 +58,29 @@ const createPost = asyncHandler(async (req, res) => {
   res.status(201).json(createdPost)
 })
 
-export { getProducts, getProductById, deletePost, createPost };
+
+// @desc    Update a post
+// @route   Put /api/posts/:id
+// @access  Private/Owner/Admin
+const updatePost = asyncHandler(async (req, res) => {
+  const { type, title, description, languages, workHour, workPlace } = req.body
+
+  const post = await Post.findById(req.params.id)
+
+  if (post) {
+    post.type = type
+    post.title = title
+    post.description = description
+    post.languages = languages
+    post.workHour = workHour
+    post.workPlace = workPlace
+
+    const updatedPost = await post.save()
+    res.json(updatedPost)
+  } else {
+    res.status(404)
+    throw new Error('Post not found')
+  }
+})
+
+export { getProducts, getProductById, deletePost, createPost, updatePost };
