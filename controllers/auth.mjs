@@ -80,7 +80,7 @@ export const registerController = asyncHandler(async (req, res) => {
     res.status(401)
     throw new Error("Email exists")
   }
-  console.log(userRole)
+
   const user = await User.create({
     email: email,
     password: password,
@@ -96,7 +96,8 @@ export const registerController = asyncHandler(async (req, res) => {
       token: jwt.sign({ id: user.id }, SECRET, { expiresIn: 86400 })
     });
   } else {
-    res.status(401).json({ error: 'Invalid user data.' });
+    res.status(401)
+    throw new Error('Invalid user data.')
   }
 
 });
