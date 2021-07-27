@@ -5,7 +5,7 @@ import Comment from '../models/commentModel.mjs';
 // @desc    Fetch all posts
 // @route   GET /api/posts
 // @access  Public
-const getProducts = asyncHandler(async (req, res) => {
+const getPosts = asyncHandler(async (req, res) => {
   const posts = await Post.find({});
   res.json(posts);
 });
@@ -13,7 +13,7 @@ const getProducts = asyncHandler(async (req, res) => {
 // @desc    Fetch single post
 // @route   GET /api/posts/:id
 // @access  Public
-const getProductById = asyncHandler(async (req, res) => {
+const getPostById = asyncHandler(async (req, res) => {
   const post = await Post.findById(req.params.id);
 
   if (post) {
@@ -110,4 +110,4 @@ const createComment = asyncHandler(async (req, res) => {
   }
 })
 
-export { getProducts, getProductById, deletePost, createPost, updatePost, createComment };
+export { getPosts, getPostById, deletePost, createPost, updatePost, createComment };
