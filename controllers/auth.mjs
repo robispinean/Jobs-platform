@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-
+import asyncHandler from 'express-async-handler'
 import Role from '../models/role.mjs';
 import User from '../models/user.mjs';
 
@@ -51,45 +51,52 @@ export const loginController = (req, res) => {
     });
 };
 
-export const registerController = (req, res) => {
+export const registerController = asyncHandler(async (req, res) => {
   const { email, password, role } = req.body;
 
-  if (!email || !password) {
-    res.status(400).json({ error: 'Email or password cannot be empty.' });
+  if (!email) {
+    res.status(400)
+    throw new Error('Email cannot be empty.')
   }
 
-  User.findOne({ email })
-    .then((user) => {
-      if (user) {
-        res.status(401).json({ error: 'Email is already used by another account.' });
-      }
-    })
-    .catch(() => {
-      res.status(500).json({ error: 'There was an error on our part.' });
-    });
+  if (!password) {
+    res.status(400)
+    throw new Error('Password cannot be empty.')
+  }
 
   if (!validEmail(email)) {
-    res.status(401).json({ error: 'Email is invalid.' });
+    res.status(401)
+    throw new Error('Email is invalid.')
   }
 
-  const studentUser = new User({
-    email,
-    password: bcrypt.hashSync(password, 8),
-  });
+  const userRole = (await Role.findOne({ name: role }))
+  if (!userRole) {
+    res.status(401)
+    throw new Error('Role is invalid.')
+  }
 
-  Role.findOne({ name: role })
-    .then((foundRole) => {
-      studentUser.role = foundRole._id;
+  const userExists = await User.findOne({ email })
+  if (userExists) {
+    res.status(401)
+    throw new Error("Email exists")
+  }
+  console.log(userRole)
+  const user = await User.create({
+    email: email,
+    password: password,
+    role: userRole,
+  })
 
-      studentUser.save((err) => {
-        if (err) {
-          res.status(500).json({ error: 'There was an error on our part.' });
-        }
-
-        res.status(200).json({ message: 'Account created succesfully.' });
-      });
-    })
-    .catch(() => {
-      res.status(401).json({ error: 'Role is invalid.' });
+  if (user) {
+    res.status(201).json({
+      message: 'Account created succesfully.',
+      _id: user._id,
+      email: user.email,
+      role: user.role,
+      token: jwt.sign({ id: user.id }, SECRET, { expiresIn: 86400 })
     });
-};
+  } else {
+    res.status(401).json({ error: 'Invalid user data.' });
+  }
+
+});
