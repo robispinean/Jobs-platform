@@ -1,19 +1,27 @@
 import jwt from 'jsonwebtoken';
+import User from '../models/user.mjs'
 
 const { SECRET } = process.env;
 
-export const verifyToken = (req, res, next) => {
-  const accessToken = req.headers['x-access-token'];
+export const verifyToken = async (req, res, next) => {
+  let accessToken
 
-  if (!accessToken) return res.status(403).json({ error: 'You must be logged in to access this resource.' });
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    try {
+      accessToken = req.headers.authorization.split(' ')[1];
 
-  return jwt.verify(accessToken, SECRET, (err) => {
-    if (err) {
-      return res.status(401).json({ error: 'Provided token is invalid.' });
+      const decoded = jwt.verify(accessToken, SECRET)
+
+      req.user = await User.findById(decoded.id).select('-password')
+
+      return next();
+    } catch (err) {
+      res.status(500).json({ error: 'Internal error.' })
     }
-
-    return next();
-  });
+  }
+  else {
+    res.status(403).json({ error: 'You must be logged in to access this resource.' });
+  }
 };
 
 const authMiddleware = {
