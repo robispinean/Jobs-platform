@@ -13,8 +13,12 @@ export const verifyToken = async (req, res, next) => {
       const decoded = jwt.verify(accessToken, SECRET)
 
       req.user = await User.findById(decoded.id).select('-password')
-
-      return next();
+      if (req.user) {
+        return next();
+      }
+      else {
+        res.status(401).json({ error: 'Try logging in again.' })
+      }
     } catch (err) {
       res.status(500).json({ error: 'Internal error.' })
     }
