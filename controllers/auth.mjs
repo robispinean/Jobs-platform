@@ -25,31 +25,28 @@ export const verifyTokenController = (req, res) => {
   });
 };
 
-export const loginController = (req, res) => {
-  User.findOne({ email: req.body.email }).populate('role', '-__v')
-    .then((user) => {
-      if (!user) {
-        return res.status(401).json({ error: 'Email is not recognized.' });
-      }
+export const loginController = asyncHandler(async (req, res) => {
+  const user = await User.findOne({ email: req.body.email }).populate('role', '-__v')
+  if (!user) {
+    res.status(401)
+    throw new Error('Email is not recognized.');
+  }
 
-      const isPasswordCorrect = bcrypt.compareSync(req.body.password, user.password);
-
-      if (!isPasswordCorrect) {
-        return res.status(401).json({ error: 'Password is incorrect.' });
-      }
-
-      const token = jwt.sign({ id: user.id }, SECRET, { expiresIn: 86400 });
-
-      return res.status(200).json({
-        id: user._id,
-        email: user.email,
-        role: user.role.name,
-        accessToken: token,
-      });
-    }).catch(() => {
-      res.status(500).json({ error: 'There was an error on our part.' });
+  if (user && (await user.isPasswordCorrect(req.body.password))) {
+    const token = jwt.sign({ id: user.id }, SECRET, { expiresIn: 86400 });
+    res.status(200).json({
+      id: user._id,
+      email: user.email,
+      role: user.role.name,
+      accessToken: token,
     });
-};
+  }
+  else {
+    res.status(401)
+    throw new Error('Password is incorrect.')
+  }
+
+});
 
 export const registerController = asyncHandler(async (req, res) => {
   const { email, password, role } = req.body;
