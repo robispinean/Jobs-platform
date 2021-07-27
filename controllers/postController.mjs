@@ -39,4 +39,24 @@ const deletePost = asyncHandler(async (req, res) => {
   }
 })
 
-export { getProducts, getProductById, deletePost };
+// @desc    Create a post
+// @route   POST /api/posts
+// @access  User
+const createPost = asyncHandler(async (req, res) => {
+  console.log(req.user._id)
+  const post = new Post({
+    owner: req.user._id,
+    type: req.body.type,
+    title: req.body.title,
+    description: req.body.description,
+    languages: req.body.languages,
+    workHour: req.body.workHour,
+    workPlace: req.body.workPlace,
+    comments: []
+  })
+
+  const createdPost = await post.save()
+  res.status(201).json(createdPost)
+})
+
+export { getProducts, getProductById, deletePost, createPost };
