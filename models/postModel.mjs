@@ -9,6 +9,8 @@ const postSchema = mongoose.Schema({
   type: {
     type: String,
     required: true,
+    enum: ['offer', 'request'],
+    default: 'offer',
   },
   title: {
     type: String,
@@ -27,10 +29,14 @@ const postSchema = mongoose.Schema({
   workHour: {
     type: String,
     required: true,
+    enum: ['part-time', 'full-time'],
+    default: 'full-time',
   },
   workPlace: {
     type: String,
     required: true,
+    enum: ['remote', 'onsite'],
+    default: 'onsite',
   },
   comments: [
     {

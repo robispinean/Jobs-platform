@@ -2,12 +2,20 @@ import asyncHandler from 'express-async-handler';
 import Post from '../models/postModel.mjs';
 import Comment from '../models/commentModel.mjs';
 
-// @desc    Fetch all posts
+// @desc    Fetch all posts, accepts queries
 // @route   GET /api/posts
 // @access  Public
 const getPosts = asyncHandler(async (req, res) => {
-  const posts = await Post.find({});
-  res.json(posts);
+  const { query } = req;
+  const { limit, offset, sort } = query;
+
+  const posts = await Post
+    .find({})
+    .sort({ updatedAt: (sort === 'desc') ? 'desc' : 'asc' })
+    .skip(parseInt(limit, 10) * parseInt(offset, 10))
+    .limit(parseInt(limit, 10));
+
+  return res.json(posts);
 });
 
 // @desc    Fetch single post
