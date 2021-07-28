@@ -4,6 +4,7 @@ import path from 'path';
 import util from './util/general-util.mjs';
 import authRouter from './routes/authRoutes.mjs';
 import postRoutes from './routes/postRoutes.mjs';
+import commentRoutes from './routes/commentRoutes.mjs';
 import { notFound, errorHandler } from './middleware/errorMiddleware.mjs';
 
 const app = express();
@@ -23,6 +24,8 @@ app.use(logger('dev'));
 app.use('/api/auth', authRouter);
 
 app.use('/api/posts', postRoutes);
+
+app.use('/api/posts', commentRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
