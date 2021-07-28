@@ -27,6 +27,7 @@ export const verifyTokenController = (req, res) => {
 
 export const loginController = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email: req.body.email }).populate('role', '-__v');
+
   if (!user) {
     res.status(401);
     throw new Error('Email is not recognized.');
