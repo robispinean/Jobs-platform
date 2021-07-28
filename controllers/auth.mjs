@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import asyncHandler from 'express-async-handler'
+import asyncHandler from 'express-async-handler';
 import Role from '../models/role.mjs';
 import User from '../models/user.mjs';
 
@@ -26,9 +26,9 @@ export const verifyTokenController = (req, res) => {
 };
 
 export const loginController = asyncHandler(async (req, res) => {
-  const user = await User.findOne({ email: req.body.email }).populate('role', '-__v')
+  const user = await User.findOne({ email: req.body.email }).populate('role', '-__v');
   if (!user) {
-    res.status(401)
+    res.status(401);
     throw new Error('Email is not recognized.');
   }
 
@@ -40,49 +40,47 @@ export const loginController = asyncHandler(async (req, res) => {
       role: user.role.name,
       accessToken: token,
     });
+  } else {
+    res.status(401);
+    throw new Error('Password is incorrect.');
   }
-  else {
-    res.status(401)
-    throw new Error('Password is incorrect.')
-  }
-
 });
 
 export const registerController = asyncHandler(async (req, res) => {
   const { email, password, role } = req.body;
 
   if (!email) {
-    res.status(400)
-    throw new Error('Email cannot be empty.')
+    res.status(400);
+    throw new Error('Email cannot be empty.');
   }
 
   if (!password) {
-    res.status(400)
-    throw new Error('Password cannot be empty.')
+    res.status(400);
+    throw new Error('Password cannot be empty.');
   }
 
   if (!validEmail(email)) {
-    res.status(401)
-    throw new Error('Email is invalid.')
+    res.status(401);
+    throw new Error('Email is invalid.');
   }
 
-  const userRole = (await Role.findOne({ name: role }))
+  const userRole = (await Role.findOne({ name: role }));
   if (!userRole) {
-    res.status(401)
-    throw new Error('Role is invalid.')
+    res.status(401);
+    throw new Error('Role is invalid.');
   }
 
-  const userExists = await User.findOne({ email })
+  const userExists = await User.findOne({ email });
   if (userExists) {
-    res.status(401)
-    throw new Error("Email exists")
+    res.status(401);
+    throw new Error('Email exists');
   }
 
   const user = await User.create({
-    email: email,
-    password: password,
+    email,
+    password,
     role: userRole,
-  })
+  });
 
   if (user) {
     res.status(201).json({
@@ -90,11 +88,10 @@ export const registerController = asyncHandler(async (req, res) => {
       _id: user._id,
       email: user.email,
       role: user.role,
-      token: jwt.sign({ id: user.id }, SECRET, { expiresIn: 86400 })
+      token: jwt.sign({ id: user.id }, SECRET, { expiresIn: 86400 }),
     });
   } else {
-    res.status(401)
-    throw new Error('Invalid user data.')
+    res.status(401);
+    throw new Error('Invalid user data.');
   }
-
 });

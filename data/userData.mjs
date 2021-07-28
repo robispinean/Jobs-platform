@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
 const roles = [
   {

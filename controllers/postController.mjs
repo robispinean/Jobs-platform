@@ -28,17 +28,17 @@ const getPostById = asyncHandler(async (req, res) => {
 // @route   DELETE /api/posts/:id
 // @access  Private/Owner/Admin
 const deletePost = asyncHandler(async (req, res) => {
-  let post = await Post.findById(req.params.id)
-  let postId = post._id
+  const post = await Post.findById(req.params.id);
+  const postId = post._id;
   if (post) {
-    await post.remove()
+    await post.remove();
 
-    res.json({ message: `Post ${postId} removed` })
+    res.json({ message: `Post ${postId} removed` });
   } else {
-    res.status(404)
-    throw new Error("Post not found")
+    res.status(404);
+    throw new Error('Post not found');
   }
-})
+});
 
 // @desc    Create a post
 // @route   POST /api/posts
@@ -52,62 +52,66 @@ const createPost = asyncHandler(async (req, res) => {
     languages: req.body.languages,
     workHour: req.body.workHour,
     workPlace: req.body.workPlace,
-    comments: []
-  })
+    comments: [],
+  });
 
-  const createdPost = await post.save()
-  res.status(201).json(createdPost)
-})
+  const createdPost = await post.save();
+  res.status(201).json(createdPost);
+});
 
 // @desc    Update a post
 // @route   Put /api/posts/:id
 // @access  Private/Owner/Admin
 const updatePost = asyncHandler(async (req, res) => {
-  const { type, title, description, languages, workHour, workPlace } = req.body
+  const {
+    type, title, description, languages, workHour, workPlace,
+  } = req.body;
 
-  const post = await Post.findById(req.params.id)
+  const post = await Post.findById(req.params.id);
 
   if (post) {
-    post.type = type
-    post.title = title
-    post.description = description
-    post.languages = languages
-    post.workHour = workHour
-    post.workPlace = workPlace
+    post.type = type;
+    post.title = title;
+    post.description = description;
+    post.languages = languages;
+    post.workHour = workHour;
+    post.workPlace = workPlace;
 
-    const updatedPost = await post.save()
-    res.json(updatedPost)
+    const updatedPost = await post.save();
+    res.json(updatedPost);
   } else {
-    res.status(404)
-    throw new Error('Post not found')
+    res.status(404);
+    throw new Error('Post not found');
   }
-})
+});
 
 // @desc    Create post comment
 // @route   Put /api/posts/:id/comments
 // @access  User
 const createComment = asyncHandler(async (req, res) => {
-  const { description } = req.body
+  const { description } = req.body;
 
-  const post = await Post.findById(req.params.id)
-  const userID = req.user._id
+  const post = await Post.findById(req.params.id);
+  const userID = req.user._id;
   if (post) {
     const comment = new Comment({
       owner: userID,
-      description: description
-    })
+      description,
+    });
 
-    const addedComment = await comment.save()
+    const addedComment = await comment.save();
 
-    post.comments.push(addedComment)
+    post.comments.push(addedComment);
 
-    await post.save()
-    res.status(201)
-    res.json({ message: 'Comment added', addedComment })
+    await post.save();
+    res.status(201);
+    res.json({ message: 'Comment added', addedComment });
   } else {
-    res.status(404)
-    throw new Error('Post not found')
+    res.status(404);
+    throw new Error('Post not found');
   }
-})
+});
 
-export { getPosts, getPostById, deletePost, createPost, updatePost, createComment };
+export {
+  getPosts, getPostById, deletePost, createPost, updatePost, createComment,
+};
