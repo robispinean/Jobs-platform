@@ -20,4 +20,4 @@ const updatePrivilege = asyncHandler(async (req, res, next) => {
   }
 });
 
-export { updatePrivilege };
+export default updatePrivilege;

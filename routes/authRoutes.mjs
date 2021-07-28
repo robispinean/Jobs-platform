@@ -1,13 +1,18 @@
 import express from 'express';
 
-import { loginController, registerController, verifyTokenController } from '../controllers/authController.mjs';
+import {
+  loginController, registerController, verifyTokenController,
+} from '../controllers/authController.mjs';
 
 const router = express.Router();
 
-router.post('/login', loginController);
+router.route('/login')
+  .post(loginController);
 
-router.post('/register', registerController);
+router.route('/register')
+  .post(registerController);
 
-router.post('/token/:accessToken', verifyTokenController);
+router.route('/token/:accessToken')
+  .post(verifyTokenController);
 
 export default router;
