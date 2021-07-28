@@ -11,24 +11,42 @@ const createComment = asyncHandler(async (req, res) => {
     const post = await Post.findById(req.params.id);
     const userID = req.user._id;
     if (post) {
-      const comment = new Comment({
-        owner: userID,
-        description,
-      });
+        const comment = new Comment({
+            owner: userID,
+            description,
+        });
 
-      const addedComment = await comment.save();
+        const addedComment = await comment.save();
 
-      post.comments.push(addedComment);
+        post.comments.push(addedComment);
 
-      await post.save();
-      res.status(201);
-      res.json({ message: 'Comment added.', addedComment });
+        await post.save();
+        res.status(201);
+        res.json({ message: 'Comment added.', addedComment });
     } else {
-      res.status(404);
-      throw new Error('Post not found.');
+        res.status(404);
+        throw new Error('Post not found.');
     }
-  });
+});
 
-  export {
-    createComment,
-  };
+// @desc    Get post comments
+// @route   Get /api/posts/:id/comments
+// @access  Public
+const getComments = asyncHandler(async (req, res) => {
+    const post = await Post.findById(req.params.id).populate("comments");
+
+    if (post) {
+        const comments = post.comments;
+        comments.sort((a, b) => {
+            return new Date(b.createdAt) - new Date(a.createdAt);
+        })
+        res.status(200);
+        res.json(comments);
+    } else {
+        res.status(404);
+        throw new Error('Post not found');
+    }
+});
+export {
+    createComment, getComments,
+};
