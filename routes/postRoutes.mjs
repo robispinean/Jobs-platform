@@ -3,7 +3,7 @@ import {
   getPosts, getPostById, deletePost, createPost, updatePost, createComment,
 } from '../controllers/postController.mjs';
 import { updatePrivilege } from '../middleware/postMiddleware.mjs';
-import { verifyToken } from '../middleware/auth.mjs';
+import { verifyToken } from '../middleware/authMiddleware.mjs';
 
 const router = express.Router();
 

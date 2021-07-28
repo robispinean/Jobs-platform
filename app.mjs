@@ -2,9 +2,9 @@ import express from 'express';
 import logger from 'morgan';
 import path from 'path';
 import util from './util/general-util.mjs';
-import authRouter from './routes/auth.mjs';
-import errorRouter from './routes/404.mjs';
-import indexRouter from './routes/index.mjs';
+import authRouter from './routes/authRoutes.mjs';
+import errorRouter from './routes/404Routes.mjs';
+import indexRouter from './routes/indexRoutes.mjs';
 import postRoutes from './routes/postRoutes.mjs';
 import { notFound, errorHandler } from './middleware/errorMiddleware.mjs';
 

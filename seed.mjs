@@ -1,8 +1,8 @@
 import dotenv from 'dotenv';
 import Post from './models/postModel.mjs';
-import User from './models/user.mjs';
+import User from './models/userModel.mjs';
 import Comment from './models/commentModel.mjs';
-import Role from './models/role.mjs';
+import Role from './models/roleModel.mjs';
 import { users, roles } from './data/userData.mjs';
 import posts from './data/postData.mjs';
 import comments from './data/commentData.mjs';

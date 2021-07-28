@@ -1,7 +1,7 @@
 import createError from 'http-errors';
 import express from 'express';
 
-import errorController from '../controllers/404.mjs';
+import errorController from '../controllers/404Controller.mjs';
 
 const router = express.Router();
 

@@ -1,8 +1,8 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import asyncHandler from 'express-async-handler';
-import Role from '../models/role.mjs';
-import User from '../models/user.mjs';
+import Role from '../models/roleModel.mjs';
+import User from '../models/userModel.mjs';
 
 const { SECRET } = process.env;
 

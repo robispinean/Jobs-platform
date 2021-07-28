@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { loginController, registerController, verifyTokenController } from '../controllers/auth.mjs';
+import { loginController, registerController, verifyTokenController } from '../controllers/authController.mjs';
 
 const router = express.Router();
 
