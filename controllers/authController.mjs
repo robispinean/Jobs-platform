@@ -74,7 +74,7 @@ export const registerController = asyncHandler(async (req, res) => {
   const userExists = await User.findOne({ email });
   if (userExists) {
     res.status(401);
-    throw new Error('Email exists');
+    throw new Error('Email exists.');
   }
 
   const user = await User.create({
