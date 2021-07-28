@@ -1,6 +1,5 @@
 import asyncHandler from 'express-async-handler';
 import Post from '../models/postModel.mjs';
-import Comment from '../models/commentModel.mjs';
 
 // @desc    Fetch all posts, accepts queries
 // @route   GET /api/posts
@@ -28,7 +27,7 @@ const getPostById = asyncHandler(async (req, res) => {
     res.json(post);
   } else {
     res.status(404);
-    throw new Error('Post not found');
+    throw new Error('Post not found.');
   }
 });
 
@@ -41,10 +40,10 @@ const deletePost = asyncHandler(async (req, res) => {
   if (post) {
     await post.remove();
 
-    res.json({ message: `Post ${postId} removed` });
+    res.json({ message: `Post ${postId} removed.` });
   } else {
     res.status(404);
-    throw new Error('Post not found');
+    throw new Error('Post not found.');
   }
 });
 
@@ -89,7 +88,7 @@ const updatePost = asyncHandler(async (req, res) => {
     res.json(updatedPost);
   } else {
     res.status(404);
-    throw new Error('Post not found');
+    throw new Error('Post not found.');
   }
 });
 
