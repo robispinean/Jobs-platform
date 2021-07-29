@@ -2,7 +2,7 @@ import express from 'express';
 import {
   createComment, getComments, deleteComment,
 } from '../controllers/commentController.mjs';
-import { updatePrivilege } from '../middleware/postMiddleware.mjs';
+import { updatePrivilege } from '../middleware/commentMiddleware.mjs';
 import { verifyToken } from '../middleware/authMiddleware.mjs';
 
 const router = express.Router();

@@ -36,7 +36,6 @@ export const verifyToken = async (req, res, next) => {
           return next();
         }
 
-        res.status(401).json({ error: 'Try logging in again.' });
       } catch (err) {
         return res.status(500).json({ error: 'Internal error.' });
       }
