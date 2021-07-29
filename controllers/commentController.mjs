@@ -49,7 +49,7 @@ const getComments = asyncHandler(async (req, res) => {
 });
 
 // @desc    Delete post comment
-// @route   Get /api/posts/:postId/comments/:commentId
+// @route   DELETE /api/posts/:postId/comments/:commentId
 // @access  Private/Owner/Admin
 const deleteComment = asyncHandler(async (req, res) => {
     const post = await Post.findById(req.params.id)
@@ -58,7 +58,7 @@ const deleteComment = asyncHandler(async (req, res) => {
     if (comment) {
         const commentId = comment._id
 
-        if(post){
+        if (post) {
             let index = post.comments.indexOf(commentId)
 
             if (index > -1) {
@@ -66,8 +66,8 @@ const deleteComment = asyncHandler(async (req, res) => {
 
                 await post.save();
                 console.log(post.comments)
-              }
-        }else{ 
+            }
+        } else {
             res.status(404);
             throw new Error('Post not found.');
         }
@@ -80,6 +80,40 @@ const deleteComment = asyncHandler(async (req, res) => {
     }
 });
 
+// @desc    Update post comment
+// @route   Put /api/posts/:postId/comments/:commentId
+// @access  Private/Owner/Admin
+const updateComment = asyncHandler(async (req, res) => {
+    const {
+        description
+    } = req.body;
+
+    const post = await Post.findById(req.params.id);
+    const comment = await Comment.findById(req.params.commentId);
+
+    if (comment) {
+        const commentId = comment._id
+
+        if (post) {
+            if (post.comments.indexOf(commentId) === -1) {
+                res.status(404);
+                throw new Error('Post does not have specified comment.');
+            }
+        } else {
+            res.status(404);
+            throw new Error('Post not found.');
+        }
+        comment.description = description;
+
+        const updatedComment = await comment.save();
+        res.json({ message: `Comment ${commentId} updated`, updatedComment });
+    } else {
+        res.status(404);
+        throw new Error('Comment not found.');
+    }
+
+});
+
 export {
-    createComment, getComments, deleteComment
+    createComment, getComments, deleteComment, updateComment
 };

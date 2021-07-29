@@ -1,6 +1,6 @@
 import express from 'express';
 import {
-  createComment, getComments, deleteComment,
+  createComment, getComments, deleteComment, updateComment
 } from '../controllers/commentController.mjs';
 import { updatePrivilege } from '../middleware/commentMiddleware.mjs';
 import { verifyToken } from '../middleware/authMiddleware.mjs';
@@ -12,6 +12,7 @@ router.route('/:id/comments')
   .get(getComments);
 
 router.route('/:id/comments/:commentId')
-  .delete(verifyToken, updatePrivilege, deleteComment);
+  .delete(verifyToken, updatePrivilege, deleteComment)
+  .put((verifyToken, updatePrivilege, updateComment));
 
 export default router;
