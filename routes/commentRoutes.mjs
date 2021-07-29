@@ -13,6 +13,6 @@ router.route('/:id/comments')
 
 router.route('/:id/comments/:commentId')
   .delete(verifyToken, updatePrivilege, deleteComment)
-  .put((verifyToken, updatePrivilege, updateComment));
+  .put(verifyToken, updatePrivilege, updateComment);
 
 export default router;
