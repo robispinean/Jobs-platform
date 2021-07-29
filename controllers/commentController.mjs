@@ -47,6 +47,39 @@ const getComments = asyncHandler(async (req, res) => {
         throw new Error('Post not found');
     }
 });
+
+// @desc    Delete post comment
+// @route   Get /api/posts/:postId/comments/:commentId
+// @access  Private/Owner/Admin
+const deleteComment = asyncHandler(async (req, res) => {
+    const post = await Post.findById(req.params.id)
+    const comment = await Comment.findById(req.params.commentId)
+
+    if (comment) {
+        const commentId = comment._id
+
+        if(post){
+            let index = post.comments.indexOf(commentId)
+
+            if (index > -1) {
+                post.comments.splice(index, 1);
+
+                await post.save();
+                console.log(post.comments)
+              }
+        }else{ 
+            res.status(404);
+            throw new Error('Post not found.');
+        }
+
+        await comment.remove();
+        res.json({ message: `Comment ${commentId} removed.` });
+    } else {
+        res.status(404);
+        throw new Error('Comment not found.');
+    }
+});
+
 export {
-    createComment, getComments,
+    createComment, getComments, deleteComment
 };

@@ -36,8 +36,9 @@ const getPostById = asyncHandler(async (req, res) => {
 // @access  Private/Owner/Admin
 const deletePost = asyncHandler(async (req, res) => {
   const post = await Post.findById(req.params.id);
-  const postId = post._id;
+  
   if (post) {
+    const postId = post._id;
     await post.remove();
 
     res.json({ message: `Post ${postId} removed.` });
