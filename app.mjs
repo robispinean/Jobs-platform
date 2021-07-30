@@ -2,7 +2,7 @@ import express from 'express';
 import logger from 'morgan';
 import path from 'path';
 import util from './util/general-util.mjs';
-import authRouter from './routes/authRoutes.mjs';
+import authRoutes from './routes/authRoutes.mjs';
 import postRoutes from './routes/postRoutes.mjs';
 import commentRoutes from './routes/commentRoutes.mjs';
 import { notFound, errorHandler } from './middleware/errorMiddleware.mjs';
@@ -21,7 +21,7 @@ app.use(express.static(path.join(dirpath, 'public')));
 
 app.use(logger('dev'));
 
-app.use('/api/auth', authRouter);
+app.use('/api/auth', authRoutes);
 
 app.use('/api/posts', postRoutes);
 
