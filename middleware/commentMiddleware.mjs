@@ -22,3 +22,5 @@ export const updatePrivilege = asyncHandler(async (req, res, next) => {
 const commentMiddleware = {
   updatePrivilege,
 };
+
+export default commentMiddleware;

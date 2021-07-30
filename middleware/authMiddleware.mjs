@@ -35,7 +35,6 @@ export const verifyToken = async (req, res, next) => {
         if (req.user) {
           return next();
         }
-
       } catch (err) {
         return res.status(500).json({ error: 'Internal error.' });
       }
