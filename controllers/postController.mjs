@@ -12,21 +12,25 @@ const getPosts = asyncHandler(async (req, res) => {
   let languagesArray = [];
   let postQuery = {};
 
-  if (type) {
-    postQuery = { ...postQuery, type };
-  }
+  for (const [key] of Object.entries(query)) {
+    let exp = `${key}`
 
-  if (languages) {
-    languagesArray = languages.split(';');
-    postQuery = { ...postQuery, languages: { $in: languagesArray } };
-  }
-
-  if (workHour) {
-    postQuery = { ...postQuery, workHour };
-  }
-
-  if (workPlace) {
-    postQuery = { ...postQuery, workPlace };
+    switch (exp) {
+      case 'type':
+        postQuery = { ...postQuery, type };
+        break;
+      case 'languages': {
+        languagesArray = languages.split(';');
+        postQuery = { ...postQuery, languages: { $in: languagesArray } };
+        break;
+      }
+      case 'workHour':
+        postQuery = { ...postQuery, workHour };
+        break;
+      case 'workPlace':
+        postQuery = { ...postQuery, workPlace };
+        break;
+    }
   }
 
   const posts = await Post
