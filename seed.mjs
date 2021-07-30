@@ -24,11 +24,11 @@ const importData = async () => {
     const createdUsers = await User.insertMany(users);
     const admin = createdUsers[0]._id;
 
-    const sampleComments = comments.map((comment) => ({ ...comment, owner: admin }));
-    const insertedComments = await Comment.insertMany(sampleComments);
+    const samplePosts = posts.map((post) => ({ ...post, owner: admin }));
+    const insertedPosts = await Post.insertMany(samplePosts);
 
-    const samplePosts = posts.map((post) => ({ ...post, owner: admin, comments: insertedComments }));
-    await Post.insertMany(samplePosts);
+    const sampleComments = comments.map((comment) => ({ ...comment, owner: admin, post: insertedPosts[0] }));
+     await Comment.insertMany(sampleComments);
 
     console.log('Data imported');
     process.exit();
@@ -43,6 +43,7 @@ const destroyData = async () => {
     await Comment.deleteMany();
     await Post.deleteMany();
     await User.deleteMany();
+    await Role.deleteMany();
 
     console.log('Data removed');
     process.exit();
