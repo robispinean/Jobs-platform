@@ -11,7 +11,7 @@ router.route('/:id/comments')
   .post(verifyToken, createComment)
   .get(getComments);
 
-router.route('/:id/comments/:commentId')
+router.route('/comments/:commentId')
   .delete(verifyToken, updatePrivilege, deleteComment)
   .put(verifyToken, updatePrivilege, updateComment);
 
