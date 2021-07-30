@@ -6,12 +6,33 @@ import Post from '../models/postModel.mjs';
 // @access  Public
 const getPosts = asyncHandler(async (req, res) => {
   const { query } = req;
-  const { limit, offset, sort } = query;
+  const {
+    limit, offset, sort, type, languages, workHour, workPlace,
+  } = query;
+  let languagesArray = [];
+  let postQuery = {};
+
+  if (type) {
+    postQuery = { ...postQuery, type };
+  }
+
+  if (languages) {
+    languagesArray = languages.split(';');
+    postQuery = { ...postQuery, languages: { $in: languagesArray } };
+  }
+
+  if (workHour) {
+    postQuery = { ...postQuery, workHour };
+  }
+
+  if (workPlace) {
+    postQuery = { ...postQuery, workPlace };
+  }
 
   const posts = await Post
-    .find({})
+    .find(postQuery)
     .sort({ updatedAt: (sort === 'desc') ? 'desc' : 'asc' })
-    .skip(parseInt(limit, 10) * parseInt(offset, 10))
+    .skip(parseInt(limit, 10) * parseInt((offset - 1), 10))
     .limit(parseInt(limit, 10));
 
   return res.json(posts);
@@ -36,7 +57,7 @@ const getPostById = asyncHandler(async (req, res) => {
 // @access  Private/Owner/Admin
 const deletePost = asyncHandler(async (req, res) => {
   const post = await Post.findById(req.params.id);
-  
+
   if (post) {
     const postId = post._id;
     await post.remove();
