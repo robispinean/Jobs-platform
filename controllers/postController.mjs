@@ -34,7 +34,15 @@ const getPosts = asyncHandler(async (req, res) => {
   }
 
   const posts = await Post
-    .find(postQuery)
+    .find(postQuery, { post: 0, __v: 0 })
+    .populate({
+      path: 'owner',
+      select: '-password -__v',
+      populate: {
+        path: 'role',
+        select: '-_id -__v',
+      }
+    })
     .sort({ updatedAt: (sort === 'desc') ? 'desc' : 'asc' })
     .skip(parseInt(limit, 10) * parseInt((offset - 1), 10))
     .limit(parseInt(limit, 10));
@@ -46,7 +54,15 @@ const getPosts = asyncHandler(async (req, res) => {
 // @route   GET /api/posts/:id
 // @access  Public
 const getPostById = asyncHandler(async (req, res) => {
-  const post = await Post.findById(req.params.id);
+  const post = await Post.findById(req.params.id, { post: 0, __v: 0 })
+  .populate({
+    path: 'owner',
+    select: '-password -__v',
+    populate: {
+      path: 'role',
+      select: '-_id -__v',
+    }
+  });
 
   if (post) {
     res.json(post);
