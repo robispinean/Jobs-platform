@@ -81,7 +81,6 @@ const createPost = asyncHandler(async (req, res) => {
     languages: req.body.languages,
     workHour: req.body.workHour,
     workPlace: req.body.workPlace,
-    comments: [],
   });
 
   const createdPost = await post.save();
