@@ -38,12 +38,6 @@ const postSchema = mongoose.Schema({
     enum: ['remote', 'onsite'],
     default: 'onsite',
   },
-  comments: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Comment',
-    },
-  ],
 }, {
   timestamps: true,
 });
