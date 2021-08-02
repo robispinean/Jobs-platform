@@ -35,6 +35,7 @@ export const loginController = asyncHandler(async (req, res) => {
 
   if (user && (await user.isPasswordCorrect(req.body.password))) {
     const token = jwt.sign({ id: user.id }, SECRET, { expiresIn: 86400 });
+    res.cookie('jwt', token, { httpOnly: true, maxAge: 86400 })
     res.status(200).json({
       id: user._id,
       email: user.email,
@@ -45,6 +46,12 @@ export const loginController = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error('Password is incorrect.');
   }
+});
+
+export const logoutController = asyncHandler(async (req, res) => {
+  console.log("Log out")
+  res.cookie('jwt', '', { maxAge: 1 })
+  res.redirect('/')
 });
 
 export const registerController = asyncHandler(async (req, res) => {

@@ -1,13 +1,16 @@
 import express from 'express';
 
 import {
-  loginController, registerController, verifyTokenController,
+  loginController, logoutController, registerController, verifyTokenController,
 } from '../controllers/authController.mjs';
 
 const router = express.Router();
 
 router.route('/login')
   .post(loginController);
+
+router.route('/logout')
+  .get(logoutController);
 
 router.route('/register')
   .post(registerController);
