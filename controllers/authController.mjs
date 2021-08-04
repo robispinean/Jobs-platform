@@ -1,4 +1,3 @@
-import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import asyncHandler from 'express-async-handler';
 import Role from '../models/roleModel.mjs';
@@ -36,13 +35,13 @@ export const loginController = asyncHandler(async (req, res) => {
 
   if (user && (await user.isPasswordCorrect(req.body.password))) {
 
-    const token = jwt.sign({ id: user.id }, SECRET, { expiresIn: (ONE_DAY * 1000) });
-    res.cookie('jwt', token, { httpOnly: true, maxAge: (ONE_DAY * 1000) })
+    const token = jwt.sign({ id: user.id }, SECRET, { expiresIn: (ONE_DAY) });
+    res.cookie('jwt', token, { httpOnly: true, maxAge: (ONE_DAY) })
 
     res.status(200).json({
       id: user._id,
       email: user.email,
-      role: user.role.name,
+      role: user.role,
       accessToken: token,
     });
   } else {
@@ -54,7 +53,7 @@ export const loginController = asyncHandler(async (req, res) => {
 export const logoutController = asyncHandler(async (req, res) => {
   console.log("Log out")
   res.cookie('jwt', '', { maxAge: 1 })
-  res.redirect('/')
+  res.json({message: "logout"})
 });
 
 export const registerController = asyncHandler(async (req, res) => {
@@ -92,9 +91,9 @@ export const registerController = asyncHandler(async (req, res) => {
     password,
     role: userRole,
   });
-  
-  const token = jwt.sign({ id: user.id }, SECRET, { expiresIn: (ONE_DAY * 1000) })
-  res.cookie('jwt', token, { httpOnly: true, maxAge: (ONE_DAY * 1000) })
+
+  const token = jwt.sign({ id: user.id }, SECRET, { expiresIn: (ONE_DAY) })
+  res.cookie('jwt', token, { httpOnly: true, maxAge: (ONE_DAY) })
 
   if (user) {
     res.status(201).json({
