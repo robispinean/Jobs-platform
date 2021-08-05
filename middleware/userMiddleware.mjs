@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler';
-import User from '../models/userModel.mjs';
+
 import Role from '../models/roleModel.mjs';
+import User from '../models/userModel.mjs';
 
 export const updatePrivilege = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.params.id);

@@ -1,10 +1,11 @@
 import asyncHandler from 'express-async-handler';
+
 import User from '../models/userModel.mjs';
 
 // @desc    Fetch all users
 // @route   GET /api/users
 // @access  Private
-const getUsers = asyncHandler(async (req, res) => {
+export const getUsers = asyncHandler(async (req, res) => {
   const users = await User
     .find({}, { __v: 0, password: 0 })
     .populate({
@@ -18,7 +19,7 @@ const getUsers = asyncHandler(async (req, res) => {
 // @desc    Fetch single user
 // @route   GET /api/users/:id
 // @access  Private
-const getUserById = asyncHandler(async (req, res) => {
+export const getUserById = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id, { __v: 0, password: 0 })
     .populate({
       path: 'role',
@@ -33,27 +34,10 @@ const getUserById = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Delete a user
-// @route   DELETE /api/users/:id
-// @access  Private/Owner/Admin
-const deleteUser = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id);
-
-  if (user) {
-    const userId = user._id;
-    await user.remove();
-
-    res.json({ message: `User ${userId} removed.` });
-  } else {
-    res.status(404);
-    throw new Error('User not found.');
-  }
-});
-
 // @desc    Update a user
 // @route   Put /api/users/:id
 // @access  Private/Owner/Admin
-const updateUser = asyncHandler(async (req, res) => {
+export const updateUser = asyncHandler(async (req, res) => {
   const {
     email,
   } = req.body;
@@ -75,6 +59,28 @@ const updateUser = asyncHandler(async (req, res) => {
   }
 });
 
-export {
-  getUsers, getUserById, deleteUser, updateUser,
+// @desc    Delete a user
+// @route   DELETE /api/users/:id
+// @access  Private/Owner/Admin
+export const deleteUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+
+  if (user) {
+    const userId = user._id;
+    await user.remove();
+
+    res.json({ message: `User ${userId} removed.` });
+  } else {
+    res.status(404);
+    throw new Error('User not found.');
+  }
+});
+
+const userController = {
+  getUsers,
+  getUserById,
+  updateUser,
+  deleteUser,
 };
+
+export default userController;

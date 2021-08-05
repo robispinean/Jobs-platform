@@ -11,7 +11,7 @@ const validEmail = (email) => {
   return re.test(String(email).toLowerCase());
 };
 
-export const verifyTokenController = (req, res) => {
+export const verifyToken = (req, res) => {
   const { accessToken } = req.params;
 
   if (!accessToken) return res.status(403).json({ error: 'Token must be provided.' });
@@ -25,7 +25,7 @@ export const verifyTokenController = (req, res) => {
   });
 };
 
-export const loginController = asyncHandler(async (req, res) => {
+export const login = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email: req.body.email }).populate('role', '-__v');
 
   if (!user) {
@@ -35,7 +35,7 @@ export const loginController = asyncHandler(async (req, res) => {
 
   if (user && (await user.isPasswordCorrect(req.body.password))) {
     const token = jwt.sign({ id: user.id }, SECRET, { expiresIn: (ONE_DAY) });
-    res.cookie('jwt', token, { httpOnly: true, maxAge: (ONE_DAY) });
+    res.cookie('jwt', token, { httpOnly: true, maxAge: (ONE_DAY * 1000) });
 
     res.status(200).json({
       id: user._id,
@@ -49,13 +49,13 @@ export const loginController = asyncHandler(async (req, res) => {
   }
 });
 
-export const logoutController = asyncHandler(async (req, res) => {
+export const logout = asyncHandler(async (req, res) => {
   console.log('Log out');
   res.cookie('jwt', '', { maxAge: 1 });
   res.json({ message: 'logout' });
 });
 
-export const registerController = asyncHandler(async (req, res) => {
+export const register = asyncHandler(async (req, res) => {
   const { email, password, role } = req.body;
 
   if (!email) {
@@ -92,7 +92,7 @@ export const registerController = asyncHandler(async (req, res) => {
   });
 
   const token = jwt.sign({ id: user.id }, SECRET, { expiresIn: (ONE_DAY) });
-  res.cookie('jwt', token, { httpOnly: true, maxAge: (ONE_DAY) });
+  res.cookie('jwt', token, { httpOnly: true, maxAge: (ONE_DAY * 1000) });
 
   if (user) {
     res.status(201).json({
@@ -107,3 +107,12 @@ export const registerController = asyncHandler(async (req, res) => {
     throw new Error('Invalid user data.');
   }
 });
+
+const authController = {
+  verifyToken,
+  login,
+  logout,
+  register,
+};
+
+export default authController;

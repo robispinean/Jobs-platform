@@ -1,10 +1,11 @@
 import asyncHandler from 'express-async-handler';
+
 import Post from '../models/postModel.mjs';
 
 // @desc    Fetch all posts, accepts queries
 // @route   GET /api/posts
 // @access  Public
-const getPosts = asyncHandler(async (req, res) => {
+export const getPosts = asyncHandler(async (req, res) => {
   const { query } = req;
   const {
     limit, offset, sort, type, languages, workHour, workPlace,
@@ -56,7 +57,7 @@ const getPosts = asyncHandler(async (req, res) => {
 // @desc    Fetch single post
 // @route   GET /api/posts/:id
 // @access  Public
-const getPostById = asyncHandler(async (req, res) => {
+export const getPostById = asyncHandler(async (req, res) => {
   const post = await Post.findById(req.params.id, { post: 0, __v: 0 })
     .populate({
       path: 'owner',
@@ -78,7 +79,7 @@ const getPostById = asyncHandler(async (req, res) => {
 // @desc    Delete a post
 // @route   DELETE /api/posts/:id
 // @access  Private/Owner/Admin
-const deletePost = asyncHandler(async (req, res) => {
+export const deletePost = asyncHandler(async (req, res) => {
   const post = await Post.findById(req.params.id);
 
   if (post) {
@@ -95,7 +96,7 @@ const deletePost = asyncHandler(async (req, res) => {
 // @desc    Create a post
 // @route   POST /api/posts
 // @access  User
-const createPost = asyncHandler(async (req, res) => {
+export const createPost = asyncHandler(async (req, res) => {
   const post = new Post({
     owner: req.user._id,
     type: req.body.type,
@@ -113,7 +114,7 @@ const createPost = asyncHandler(async (req, res) => {
 // @desc    Update a post
 // @route   Put /api/posts/:id
 // @access  Private/Owner/Admin
-const updatePost = asyncHandler(async (req, res) => {
+export const updatePost = asyncHandler(async (req, res) => {
   const {
     type, title, description, languages, workHour, workPlace,
   } = req.body;
@@ -136,6 +137,12 @@ const updatePost = asyncHandler(async (req, res) => {
   }
 });
 
-export {
-  getPosts, getPostById, deletePost, createPost, updatePost,
+const postController = {
+  getPosts,
+  getPostById,
+  deletePost,
+  createPost,
+  updatePost,
 };
+
+export default postController;

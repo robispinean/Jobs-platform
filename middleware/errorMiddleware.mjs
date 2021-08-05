@@ -1,10 +1,10 @@
-const notFound = (req, res, next) => {
+export const notFound = (req, res, next) => {
   const error = new Error(`${req.originalUrl} - Not found`);
   res.status(404);
   next(error);
 };
 
-const errorHandler = (err, req, res, next) => {
+export const errorHandler = (err, req, res, next) => {
   const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
 
   res.status(statusCode);
@@ -14,4 +14,9 @@ const errorHandler = (err, req, res, next) => {
   });
 };
 
-export { notFound, errorHandler };
+const errorMiddleware = {
+  notFound,
+  errorHandler,
+};
+
+export default errorMiddleware;

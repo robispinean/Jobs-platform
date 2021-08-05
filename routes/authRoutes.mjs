@@ -1,21 +1,21 @@
 import express from 'express';
 
 import {
-  loginController, logoutController, registerController, verifyTokenController,
+  login, logout, register, verifyToken,
 } from '../controllers/authController.mjs';
 
 const router = express.Router();
 
 router.route('/login')
-  .post(loginController);
+  .post(login);
 
 router.route('/logout')
-  .get(logoutController);
+  .get(logout);
 
 router.route('/register')
-  .post(registerController);
+  .post(register);
 
 router.route('/token/:accessToken')
-  .post(verifyTokenController);
+  .post(verifyToken);
 
 export default router;

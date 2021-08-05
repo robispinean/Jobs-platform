@@ -1,11 +1,14 @@
 import express from 'express';
 import logger from 'morgan';
 import path from 'path';
+
 import util from './util/general-util.mjs';
+
 import authRoutes from './routes/authRoutes.mjs';
-import postRoutes from './routes/postRoutes.mjs';
 import commentRoutes from './routes/commentRoutes.mjs';
+import postRoutes from './routes/postRoutes.mjs';
 import userRoutes from './routes/userRoutes.mjs';
+
 import { notFound, errorHandler } from './middleware/errorMiddleware.mjs';
 
 const app = express();

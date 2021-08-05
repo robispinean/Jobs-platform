@@ -1,7 +1,9 @@
 import express from 'express';
+
 import {
   getUsers, getUserById, deleteUser, updateUser,
 } from '../controllers/userController.mjs';
+
 import { updatePrivilege } from '../middleware/userMiddleware.mjs';
 import { verifyToken } from '../middleware/authMiddleware.mjs';
 

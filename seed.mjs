@@ -1,23 +1,27 @@
-import dotenv from 'dotenv';
-import Post from './models/postModel.mjs';
-import User from './models/userModel.mjs';
 import Comment from './models/commentModel.mjs';
+import Post from './models/postModel.mjs';
 import Role from './models/roleModel.mjs';
-import { users, roles } from './data/userData.mjs';
-import posts from './data/postData.mjs';
-import comments from './data/commentData.mjs';
-import connectDB from './config/db.mjs';
+import User from './models/userModel.mjs';
 
-dotenv.config();
+import comments from './data/commentData.mjs';
+import posts from './data/postData.mjs';
+import roles from './data/roleData.mjs';
+import users from './data/userData.mjs';
+
+import connectDB from './config/db.mjs';
 
 connectDB();
 
+const clearData = async () => {
+  await Comment.deleteMany();
+  await Post.deleteMany();
+  await User.deleteMany();
+  await Role.deleteMany();
+};
+
 const importData = async () => {
   try {
-    await Comment.deleteMany();
-    await Post.deleteMany();
-    await User.deleteMany();
-    await Role.deleteMany();
+    await clearData();
 
     await Role.insertMany(roles);
 
@@ -31,7 +35,7 @@ const importData = async () => {
     await Comment.insertMany(sampleComments);
 
     console.log('Data imported');
-    process.exit();
+    process.exit(0);
   } catch (error) {
     console.error(`${error.message}`);
     process.exit(1);
@@ -40,13 +44,10 @@ const importData = async () => {
 
 const destroyData = async () => {
   try {
-    await Comment.deleteMany();
-    await Post.deleteMany();
-    await User.deleteMany();
-    await Role.deleteMany();
+    await clearData();
 
     console.log('Data removed');
-    process.exit();
+    process.exit(0);
   } catch (error) {
     console.error(`${error.message}`);
     process.exit(1);

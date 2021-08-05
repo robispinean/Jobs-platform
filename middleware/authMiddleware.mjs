@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
-import User from '../models/userModel.mjs';
+
 import Role from '../models/roleModel.mjs';
+import User from '../models/userModel.mjs';
 
 const { SECRET } = process.env;
 

@@ -1,7 +1,9 @@
 import express from 'express';
+
 import {
   getPosts, getPostById, deletePost, createPost, updatePost,
 } from '../controllers/postController.mjs';
+
 import { updatePrivilege } from '../middleware/postMiddleware.mjs';
 import { verifyToken } from '../middleware/authMiddleware.mjs';
 

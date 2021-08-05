@@ -1,11 +1,12 @@
 import asyncHandler from 'express-async-handler';
-import Post from '../models/postModel.mjs';
+
 import Comment from '../models/commentModel.mjs';
+import Post from '../models/postModel.mjs';
 
 // @desc    Create post comment
 // @route   Put /api/posts/:id/comments
 // @access  User
-const createComment = asyncHandler(async (req, res) => {
+export const createComment = asyncHandler(async (req, res) => {
   const { description } = req.body;
 
   const post = await Post.findById(req.params.id);
@@ -34,7 +35,7 @@ const createComment = asyncHandler(async (req, res) => {
 // @desc    Get post comments
 // @route   Get /api/posts/:id/comments
 // @access  Public
-const getComments = asyncHandler(async (req, res) => {
+export const getComments = asyncHandler(async (req, res) => {
   const { query } = req;
   const { limit, offset, sort } = query;
 
@@ -63,7 +64,7 @@ const getComments = asyncHandler(async (req, res) => {
 // @desc    Delete post comment
 // @route   DELETE /api/posts/comments/:commentId
 // @access  Private/Owner/Admin
-const deleteComment = asyncHandler(async (req, res) => {
+export const deleteComment = asyncHandler(async (req, res) => {
   const comment = await Comment.findById(req.params.commentId);
 
   if (comment) {
@@ -80,7 +81,7 @@ const deleteComment = asyncHandler(async (req, res) => {
 // @desc    Update post comment
 // @route   Put /api/posts/comments/:commentId
 // @access  Private/Owner/Admin
-const updateComment = asyncHandler(async (req, res) => {
+export const updateComment = asyncHandler(async (req, res) => {
   const {
     description,
   } = req.body;
@@ -101,6 +102,11 @@ const updateComment = asyncHandler(async (req, res) => {
   }
 });
 
-export {
-  createComment, getComments, deleteComment, updateComment,
+const commentController = {
+  createComment,
+  getComments,
+  deleteComment,
+  updateComment,
 };
+
+export default commentController;

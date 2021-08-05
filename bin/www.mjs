@@ -1,7 +1,9 @@
 import debug from 'debug';
 import http from 'http';
-import connectDB from '../config/db.mjs';
+
 import app from '../app.mjs';
+
+import connectDB from '../config/db.mjs';
 
 const { PORT, DEBUG } = process.env;
 
