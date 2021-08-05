@@ -13,7 +13,7 @@ const getPosts = asyncHandler(async (req, res) => {
   let postQuery = {};
 
   for (const [key] of Object.entries(query)) {
-    let exp = `${key}`
+    const exp = `${key}`;
 
     switch (exp) {
       case 'type':
@@ -41,7 +41,7 @@ const getPosts = asyncHandler(async (req, res) => {
       populate: {
         path: 'role',
         select: '-_id -__v',
-      }
+      },
     })
     .sort({ updatedAt: (sort === 'desc') ? 'desc' : 'asc' })
     .skip(parseInt(limit, 10) * parseInt((offset - 1), 10))
@@ -55,14 +55,14 @@ const getPosts = asyncHandler(async (req, res) => {
 // @access  Public
 const getPostById = asyncHandler(async (req, res) => {
   const post = await Post.findById(req.params.id, { post: 0, __v: 0 })
-  .populate({
-    path: 'owner',
-    select: '-password -__v',
-    populate: {
-      path: 'role',
-      select: '-_id -__v',
-    }
-  });
+    .populate({
+      path: 'owner',
+      select: '-password -__v',
+      populate: {
+        path: 'role',
+        select: '-_id -__v',
+      },
+    });
 
   if (post) {
     res.json(post);

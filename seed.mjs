@@ -28,7 +28,7 @@ const importData = async () => {
     const insertedPosts = await Post.insertMany(samplePosts);
 
     const sampleComments = comments.map((comment) => ({ ...comment, owner: admin, post: insertedPosts[0] }));
-     await Comment.insertMany(sampleComments);
+    await Comment.insertMany(sampleComments);
 
     console.log('Data imported');
     process.exit();

@@ -22,8 +22,8 @@ const createComment = asyncHandler(async (req, res) => {
     await post.save();
     res.status(201);
     res.json({
-      message: 'Comment added.', 
-      addedComment 
+      message: 'Comment added.',
+      addedComment,
     });
   } else {
     res.status(404);
@@ -42,16 +42,16 @@ const getComments = asyncHandler(async (req, res) => {
 
   if (post) {
     const comments = await Comment
-        .find({ post: req.params.id }, { post: 0, __v: 0 })
-        .sort({ updatedAt: (sort === 'desc') ? 'desc' : 'asc' })
-        .populate({
-            path: 'owner',
-            select: '-password -__v',
-            populate: {
-                path: 'role',
-                select: '-_id -__v',
-            }
-        });
+      .find({ post: req.params.id }, { post: 0, __v: 0 })
+      .sort({ updatedAt: (sort === 'desc') ? 'desc' : 'asc' })
+      .populate({
+        path: 'owner',
+        select: '-password -__v',
+        populate: {
+          path: 'role',
+          select: '-_id -__v',
+        },
+      });
     res.status(200);
     res.json(comments);
   } else {
@@ -88,13 +88,12 @@ const updateComment = asyncHandler(async (req, res) => {
   const comment = await Comment.findById(req.params.commentId);
 
   if (comment) {
-
     comment.description = description;
 
     const updatedComment = await comment.save();
-    res.json({ 
-        message: `Comment ${comment._id} updated`,
-        updatedComment
+    res.json({
+      message: `Comment ${comment._id} updated`,
+      updatedComment,
     });
   } else {
     res.status(404);
