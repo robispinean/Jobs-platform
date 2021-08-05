@@ -1,6 +1,10 @@
-import jwt from 'jsonwebtoken';
 import asyncHandler from 'express-async-handler';
+import jwt from 'jsonwebtoken';
+
+import Admin from '../models/adminModel.mjs';
+import Company from '../models/companyModel.mjs';
 import Role from '../models/roleModel.mjs';
+import Student from '../models/studentModel.mjs';
 import User from '../models/userModel.mjs';
 
 const { SECRET } = process.env;
@@ -84,7 +88,7 @@ export const register = asyncHandler(async (req, res) => {
     throw new Error('Email is invalid.');
   }
 
-  const userRole = (await Role.findOne({ name: role }));
+  const userRole = await Role.findOne({ name: role });
   if (!userRole) {
     res.status(401);
     throw new Error('Role is invalid.');
@@ -101,6 +105,32 @@ export const register = asyncHandler(async (req, res) => {
     password,
     role: userRole,
   });
+
+  console.log(userRole);
+
+  switch (userRole.name) {
+    case 'student':
+      await Student.create({
+        accountRef: user,
+        firstName: '',
+        lastName: '',
+      });
+      break;
+    case 'company':
+      await Company.create({
+        accountRef: user,
+        companyName: '',
+      });
+      break;
+    case 'admin':
+      await Admin.create({
+        accountRef: user,
+        nickName: '',
+      });
+      break;
+    default:
+      break;
+  }
 
   const token = jwt.sign({ id: user.id }, SECRET, { expiresIn: (ONE_DAY) });
   res.cookie('jwt', token, { httpOnly: true, maxAge: (ONE_DAY * 1000) });
