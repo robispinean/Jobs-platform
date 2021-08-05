@@ -10,6 +10,10 @@ const companySchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  profilePicture: {
+    type: String,
+    required: true,
+  },
 });
 
 const Company = mongoose.model('Company', companySchema, 'companies');

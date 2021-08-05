@@ -106,26 +106,27 @@ export const register = asyncHandler(async (req, res) => {
     role: userRole,
   });
 
-  console.log(userRole);
-
   switch (userRole.name) {
     case 'student':
       await Student.create({
         accountRef: user,
         firstName: '',
         lastName: '',
+        profilePicture: '/resources/student/profile/default.png',
       });
       break;
     case 'company':
       await Company.create({
         accountRef: user,
         companyName: '',
+        profilePicture: '/resources/company/profile/default.png',
       });
       break;
     case 'admin':
       await Admin.create({
         accountRef: user,
         nickName: '',
+        profilePicture: '/resources/admin/profile/default.png',
       });
       break;
     default:

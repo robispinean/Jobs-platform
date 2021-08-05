@@ -14,6 +14,10 @@ const studentSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  profilePicture: {
+    type: String,
+    required: true,
+  },
 });
 
 const Student = mongoose.model('Student', studentSchema, 'students');

@@ -1,6 +1,9 @@
+import Admin from './models/adminModel.mjs';
 import Comment from './models/commentModel.mjs';
+import Company from './models/companyModel.mjs';
 import Post from './models/postModel.mjs';
 import Role from './models/roleModel.mjs';
+import Student from './models/studentModel.mjs';
 import User from './models/userModel.mjs';
 
 import comments from './data/commentData.mjs';
@@ -17,6 +20,9 @@ const clearData = async () => {
   await Post.deleteMany();
   await User.deleteMany();
   await Role.deleteMany();
+  await Admin.deleteMany();
+  await Company.deleteMany();
+  await Student.deleteMany();
 };
 
 const importData = async () => {
