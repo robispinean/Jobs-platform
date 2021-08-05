@@ -6,6 +6,8 @@ import Company from '../models/companyModel.mjs';
 import Student from '../models/studentModel.mjs';
 import User from '../models/userModel.mjs';
 
+const appDir = process.cwd();
+
 // @desc    Fetch all users
 // @route   GET /api/users
 // @access  Private
@@ -118,10 +120,14 @@ export const setProfilePicture = asyncHandler(async (req, res) => {
 
   if (user) {
     const uploadedFileName = sampleFile.name;
-    const uploadPath = `/resources/${user.role.name}/${user.id}/profile/${uploadedFileName}`;
+    const uploadPath = `${appDir}/public/resources/${user.role.name}/${user.id}/profile/${uploadedFileName}`;
     let workingUser;
 
-    sampleFile.mv(uploadPath, async () => {
+    sampleFile.mv(uploadPath, async (err) => {
+      if (err) {
+        return res.status(500).json({ error: 'Internal server error.' });
+      }
+
       switch (user.role.name) {
         case 'student':
           workingUser = await Student.findOne({ accountRef: id });
@@ -140,7 +146,7 @@ export const setProfilePicture = asyncHandler(async (req, res) => {
 
       await workingUser.save();
 
-      res.json({ message: `Profile picture for user ${id} has been changed.` });
+      return res.json({ message: `Profile picture for user ${id} has been changed.` });
     });
   } else {
     res.status(404);
