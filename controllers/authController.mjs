@@ -56,7 +56,7 @@ export const login = asyncHandler(async (req, res) => {
 });
 
 // @desc    Logout from current account
-// @route   Put /api/auth/logout
+// @route   Get /api/auth/logout
 // @access  Public
 export const logout = asyncHandler(async (req, res) => {
   res.cookie('jwt', '', { maxAge: 1 });
