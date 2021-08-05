@@ -4,7 +4,7 @@ import Role from '../models/roleModel.mjs';
 import User from '../models/userModel.mjs';
 
 const { SECRET } = process.env;
-const ONE_DAY = 24 * 60 * 60 
+const ONE_DAY = 24 * 60 * 60
 
 const validEmail = (email) => {
   const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -36,7 +36,7 @@ export const loginController = asyncHandler(async (req, res) => {
   if (user && (await user.isPasswordCorrect(req.body.password))) {
 
     const token = jwt.sign({ id: user.id }, SECRET, { expiresIn: (ONE_DAY) });
-    res.cookie('jwt', token, { httpOnly: true, maxAge: (ONE_DAY) })
+    res.cookie('jwt', token, { httpOnly: true, maxAge: (ONE_DAY * 1000) })
 
     res.status(200).json({
       id: user._id,
@@ -53,7 +53,7 @@ export const loginController = asyncHandler(async (req, res) => {
 export const logoutController = asyncHandler(async (req, res) => {
   console.log("Log out")
   res.cookie('jwt', '', { maxAge: 1 })
-  res.json({message: "logout"})
+  res.json({ message: "logout" })
 });
 
 export const registerController = asyncHandler(async (req, res) => {
@@ -93,7 +93,7 @@ export const registerController = asyncHandler(async (req, res) => {
   });
 
   const token = jwt.sign({ id: user.id }, SECRET, { expiresIn: (ONE_DAY) })
-  res.cookie('jwt', token, { httpOnly: true, maxAge: (ONE_DAY) })
+  res.cookie('jwt', token, { httpOnly: true, maxAge: (ONE_DAY * 1000) })
 
   if (user) {
     res.status(201).json({
