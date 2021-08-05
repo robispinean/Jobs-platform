@@ -18,6 +18,6 @@ router.route('/:id')
   .put(verifyToken, updatePrivilege, updateUser);
 
 router.route('/:id/profile/picture')
-  .post(setProfilePicture);
+  .post(verifyToken, updatePrivilege, setProfilePicture);
 
 export default router;
