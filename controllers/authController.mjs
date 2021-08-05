@@ -11,6 +11,9 @@ const validEmail = (email) => {
   return re.test(String(email).toLowerCase());
 };
 
+// @desc    Verify if a given jwt token is valid
+// @route   Post /api/auth/:accessToken
+// @access  Public
 export const verifyToken = (req, res) => {
   const { accessToken } = req.params;
 
@@ -25,6 +28,9 @@ export const verifyToken = (req, res) => {
   });
 };
 
+// @desc    Login to an account
+// @route   Post /api/auth/login
+// @access  Public
 export const login = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email: req.body.email }).populate('role', '-__v');
 
@@ -49,12 +55,17 @@ export const login = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Logout from current account
+// @route   Put /api/auth/logout
+// @access  Public
 export const logout = asyncHandler(async (req, res) => {
-  console.log('Log out');
   res.cookie('jwt', '', { maxAge: 1 });
   res.json({ message: 'logout' });
 });
 
+// @desc    Register an account
+// @route   Post /api/auth/register
+// @access  Public
 export const register = asyncHandler(async (req, res) => {
   const { email, password, role } = req.body;
 
