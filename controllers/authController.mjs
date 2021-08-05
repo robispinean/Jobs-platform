@@ -1,4 +1,5 @@
 import asyncHandler from 'express-async-handler';
+import fse from 'fs-extra';
 import jwt from 'jsonwebtoken';
 
 import Admin from '../models/adminModel.mjs';
@@ -6,6 +7,8 @@ import Company from '../models/companyModel.mjs';
 import Role from '../models/roleModel.mjs';
 import Student from '../models/studentModel.mjs';
 import User from '../models/userModel.mjs';
+
+const appDir = process.cwd();
 
 const { SECRET } = process.env;
 const ONE_DAY = 24 * 60 * 60;
@@ -112,26 +115,28 @@ export const register = asyncHandler(async (req, res) => {
         accountRef: user,
         firstName: '',
         lastName: '',
-        profilePicture: '/resources/student/profile/default.png',
+        profilePicture: '/resources/student/default/profile.png',
       });
       break;
     case 'company':
       await Company.create({
         accountRef: user,
         companyName: '',
-        profilePicture: '/resources/company/profile/default.png',
+        profilePicture: '/resources/company/default/profile.png',
       });
       break;
     case 'admin':
       await Admin.create({
         accountRef: user,
         nickName: '',
-        profilePicture: '/resources/admin/profile/default.png',
+        profilePicture: '/resources/admin/default/profile.png',
       });
       break;
     default:
       break;
   }
+
+  await fse.mkdirs(`${appDir}/public/resources/${userRole.name}/${user._id}/profile`);
 
   const token = jwt.sign({ id: user.id }, SECRET, { expiresIn: (ONE_DAY) });
   res.cookie('jwt', token, { httpOnly: true, maxAge: (ONE_DAY * 1000) });

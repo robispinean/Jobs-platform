@@ -1,12 +1,8 @@
 # Custom options
-/public/admin/*
-!/public/admin/default.png
-
-/public/student/*
-!/public/student/default.png
-
-/public/company/*
-!/public/company/default.png
+/public/*
+!/public/admin/profile/*
+!/public/company/profile/*
+!/public/student/profile/*
 
 # Logs
 logs

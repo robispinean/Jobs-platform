@@ -1,4 +1,5 @@
 import express from 'express';
+import fileUpload from 'express-fileupload';
 import logger from 'morgan';
 import path from 'path';
 
@@ -22,6 +23,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(dirpath, 'public')));
+
+app.use(fileUpload());
 
 app.use(logger('dev'));
 
