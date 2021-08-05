@@ -1,8 +1,10 @@
 # Custom options
-/public/*
-!/public/admin/profile/*
-!/public/company/profile/*
-!/public/student/profile/*
+/public/resources/admin/*
+/public/resources/company/*
+/public/resources/student/*
+!/public/resources/admin/default
+!/public/resources/company/default
+!/public/resources/student/default
 
 # Logs
 logs
