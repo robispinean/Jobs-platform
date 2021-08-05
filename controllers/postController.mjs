@@ -30,6 +30,9 @@ const getPosts = asyncHandler(async (req, res) => {
       case 'workPlace':
         postQuery = { ...postQuery, workPlace };
         break;
+      default:
+        postQuery = { ...postQuery };
+        break;
     }
   }
 
