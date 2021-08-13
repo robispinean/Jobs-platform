@@ -4,7 +4,9 @@ import Role from '../models/roleModel.mjs';
 import User from '../models/userModel.mjs';
 
 export const updatePrivilege = asyncHandler(async (req, res, next) => {
-  const user = await User.findById(req.params.id);
+  const { id } = req.params;
+
+  const user = await User.findById(id);
 
   const adminRole = (await Role.findOne({ name: 'admin' })).id;
 
@@ -17,7 +19,7 @@ export const updatePrivilege = asyncHandler(async (req, res, next) => {
     }
   } else {
     res.status(404);
-    throw new Error('User not found');
+    throw new Error(`User with id ${id} was not found.`);
   }
 });
 

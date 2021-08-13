@@ -46,9 +46,9 @@ export const verifyToken = async (req, res, next) => {
 };
 
 export const isStudent = async (req, res, next) => {
-  if (req.body.id) {
-    const { id } = req.body;
+  const { id } = req.body;
 
+  if (id) {
     if (checkRole(id, 'student')) {
       return next();
     }

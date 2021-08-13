@@ -22,7 +22,7 @@ app.set('view engine', 'hbs');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(express.static(path.join(dirpath, 'public')));
+app.use('/resources', express.static(path.join(dirpath, 'public')));
 
 app.use(fileUpload());
 

@@ -116,6 +116,8 @@ export const register = asyncHandler(async (req, res) => {
         firstName: '',
         lastName: '',
         profilePicture: '/resources/student/default/profile.png',
+        resume: '',
+        coverLetter: '',
       });
       break;
     case 'company':
@@ -136,7 +138,7 @@ export const register = asyncHandler(async (req, res) => {
       break;
   }
 
-  await fse.mkdirs(`${appDir}/public/resources/${userRole.name}/${user._id}/profile`);
+  await fse.mkdirs(`${appDir}/public/${userRole.name}/${user._id}/profile`);
 
   const token = jwt.sign({ id: user.id }, SECRET, { expiresIn: (ONE_DAY) });
   res.cookie('jwt', token, { httpOnly: true, maxAge: (ONE_DAY * 1000) });
